@@ -61,23 +61,32 @@ const { restaurantName, themeColor } = settings;
 		</footer>
 
     <script is:inline>
-      // 1. Handle Redirect after login
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", (user) => {
-          if (!user) {
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
+      // This listener waits for the Netlify script to be fully loaded and ready
+      document.addEventListener('DOMContentLoaded', () => {
+        if (window.netlifyIdentity) {
+          // 1. Initialize the widget
+          window.netlifyIdentity.on("init", (user) => {
+            // 2. Handle redirection after login
+            if (user) {
+              // If we are on the home page and logged in, go to admin
+              if (window.location.pathname === "/") {
+                document.location.href = "/admin/";
+              }
+            } else {
+              // 3. Force the popup if there is a token in the URL
+              const hash = window.location.hash;
+              if (hash && (hash.includes("invite_token") || hash.includes("recovery_token"))) {
+                window.netlifyIdentity.open();
+              }
+            }
+          });
 
-        // 2. FORCE TRIGGER for Invite/Recovery Tokens
-        // If the URL has a token, we force the widget to open the right tab
-        const hash = window.location.hash;
-        if (hash && (hash.includes("invite_token") || hash.includes("recovery_token"))) {
-          window.netlifyIdentity.open();
+          // 4. Global login event listener
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
         }
-      }
+      });
     </script>
 	</body>
 </html>
