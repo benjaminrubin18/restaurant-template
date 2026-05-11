@@ -12,6 +12,10 @@
     {
       "name": "Chicken McNuggets",
       "price": "$8.00"
+    },
+    {
+      "name": "Noodles",
+      "price": "$12"
     }
   ]
 }
