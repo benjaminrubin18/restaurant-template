@@ -60,18 +60,24 @@ const { restaurantName, themeColor } = settings;
 			&copy; {new Date().getFullYear()} {restaurantName}. Built for local business.
 		</footer>
 
-		<!-- 2. The Redirection Script -->
-		<!-- This tells the browser: "If the user logs in, send them to /admin" -->
-		<script is:inline>
-			if (window.netlifyIdentity) {
-				window.netlifyIdentity.on("init", (user) => {
-					if (!user) {
-						window.netlifyIdentity.on("login", () => {
-							document.location.href = "/admin/";
-						});
-					}
-				});
-			}
-		</script>
+    <script is:inline>
+      // 1. Handle Redirect after login
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on("init", (user) => {
+          if (!user) {
+            window.netlifyIdentity.on("login", () => {
+              document.location.href = "/admin/";
+            });
+          }
+        });
+
+        // 2. FORCE TRIGGER for Invite/Recovery Tokens
+        // If the URL has a token, we force the widget to open the right tab
+        const hash = window.location.hash;
+        if (hash && (hash.includes("invite_token") || hash.includes("recovery_token"))) {
+          window.netlifyIdentity.open();
+        }
+      }
+    </script>
 	</body>
 </html>
