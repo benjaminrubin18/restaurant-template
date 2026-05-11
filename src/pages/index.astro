@@ -1,20 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import MenuSection from '../components/MenuSection.astro';
 import settings from '../settings.json';
----
-<Layout>
-  <section>
-    <h1>Welcome to {settings.restaurantName}</h1>
-    <p>Check out our menu below:</p>
-    
-    <ul>
-      {settings.menu.map((item) => (
-        <li>{item.name} - {item.price}</li>
-      ))}
-    </ul>
 
-    {settings.showOnlineOrdering && (
-      <button class="order-btn">Order Online Now</button>
+// We pull all the variables we need from our settings.json "brain"
+const { restaurantName, menu, showMenu, showOnlineOrdering } = settings;
+---
+
+<Layout>
+  <header class="hero">
+    <h1>{restaurantName}</h1>
+    <p>Professional information, simple service.</p>
+    
+    {showOnlineOrdering && (
+      <a href="#" class="order-button">Order Online</a>
     )}
-  </section>
+  </header>
+
+  <main>
+    {showMenu && <MenuSection menuData={menu} />}
+    
+    <!-- You can add more modules here later, like: -->
+    <!-- {showGallery && <GallerySection />} -->
+  </main>
 </Layout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: #f9f9f9;
+  }
+  .order-button {
+    display: inline-block;
+    background-color: var(--brand-color);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 1rem;
+    font-weight: bold;
+  }
+</style>

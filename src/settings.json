@@ -2,6 +2,8 @@
   "restaurantName": "Ben's Bistro",
   "themeColor": "#3355ff",
   "showOnlineOrdering": true,
+  "showMenu": true,
+  "showGallery": false,
   "menu": [
     {"name": "Double Cheeseburger", "price": "$12.00"},
     {"name": "Chicken McNuggets", "price": "$8.00"}
