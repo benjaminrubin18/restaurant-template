@@ -1,8 +1,8 @@
 {
   "restaurantName": "Dave's Diner",
-  "themeColor": "#4958a3",
-  "showOnlineOrdering": true,
-  "showMenu": true,
+  "themeColor": "#49a35c",
+  "showOnlineOrdering": false,
+  "showMenu": false,
   "showGallery": false,
   "menu": [
     {
