@@ -60,33 +60,28 @@ const { restaurantName, themeColor } = settings;
 			&copy; {new Date().getFullYear()} {restaurantName}. Built for local business.
 		</footer>
 
-    <script is:inline>
-      // This listener waits for the Netlify script to be fully loaded and ready
-      document.addEventListener('DOMContentLoaded', () => {
-        if (window.netlifyIdentity) {
-          // 1. Initialize the widget
-          window.netlifyIdentity.on("init", (user) => {
-            // 2. Handle redirection after login
-            if (user) {
-              // If we are on the home page and logged in, go to admin
-              if (window.location.pathname === "/") {
-                document.location.href = "/admin/";
-              }
-            } else {
-              // 3. Force the popup if there is a token in the URL
-              const hash = window.location.hash;
-              if (hash && (hash.includes("invite_token") || hash.includes("recovery_token"))) {
-                window.netlifyIdentity.open();
-              }
-            }
-          });
+    <script>
+      // @ts-ignore
+      import netlifyIdentity from 'netlify-identity-widget';
 
-          // 4. Global login event listener
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
+      // This runs on the client side
+      window.netlifyIdentity = netlifyIdentity;
+
+      netlifyIdentity.on('init', user => {
+        if (!user) {
+          const hash = window.location.hash;
+          if (hash.includes("invite_token") || hash.includes("recovery_token")) {
+            netlifyIdentity.open();
+          }
         }
       });
+
+      netlifyIdentity.on('login', () => {
+        document.location.href = "/admin/";
+      });
+
+      // Initialize the widget
+      netlifyIdentity.init();
     </script>
 	</body>
 </html>
