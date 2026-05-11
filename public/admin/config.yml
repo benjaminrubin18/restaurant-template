@@ -1,0 +1,32 @@
+backend:
+  name: git-gateway
+  branch: main # Ensure this matches your GitHub branch name
+
+# This allows users to log in with Netlify Identity (Free)
+local_backend: true 
+
+media_folder: "public/images" # Where uploaded logos/photos will go
+public_folder: "/images"
+
+collections:
+  - name: "settings"
+    label: "Site Settings"
+    delete: false # Prevent clients from deleting the settings file
+    editor:
+      preview: false
+    files:
+      - name: "general"
+        label: "General Configuration"
+        file: "src/settings.json" # THIS TELLS THE CMS WHICH FILE TO EDIT
+        fields:
+          - { label: "Restaurant Name", name: "restaurantName", widget: "string" }
+          - { label: "Theme Color", name: "themeColor", widget: "color" }
+          - { label: "Show Menu?", name: "showMenu", widget: "boolean", default: true }
+          - { label: "Show Online Ordering?", name: "showOnlineOrdering", widget: "boolean", default: false }
+          - label: "Menu Items"
+            name: "menu"
+            widget: "list"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Price", name: "price", widget: "string" }
+              - { label: "Description", name: "description", widget: "text", required: false }
